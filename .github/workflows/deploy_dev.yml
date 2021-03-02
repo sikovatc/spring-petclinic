@@ -31,5 +31,5 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}      
         key: ${{ secrets.SERVER_SSH_KEY }}
         port: 22
-        source: "my-app.jar"      
-    target: "~/source"
+        source: "/home/runner/work/spring-petclinic/spring-petclinic/target/spring-petclinic-2.4.2.jar"      
+        target: "~/source"
