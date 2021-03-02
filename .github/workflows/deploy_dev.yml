@@ -33,3 +33,19 @@ jobs:
         port: 22
         source: "/home/runner/work/spring-petclinic/spring-petclinic/target/spring-petclinic-2.4.2.jar"      
         target: "~/source"
+        
+    - name: Start Service
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.API_IP_ADDRESS }}       
+        username: ${{ secrets.API_USERNAME }}     
+        key: ${{ secrets.AWS_SSH_KEY }}
+        port: 22
+        script: |
+          sudo /etc/init.d/spring-petclinic-2.4.2 stop
+          mv ~/source/spring-petclinic-2.4.2.jar ~/source/spring-petclinic-2.4.2-old.jar
+          mv ~/source/spring-petclinic-2.4.2-latest.jar ~/source/spring-petclinic-2.4.2.jar
+          sudo rm -rf /etc/init.d/spring-petclinic-2.4.2
+          sudo ln -s -f ~/source/spring-petclinic-2.4.2.jar /etc/init.d/spring-petclinic-2.4.2
+          sudo /etc/init.d/spring-petclinic-2.4.2 start
+          rm ~/source/spring-petclinic-2.4.2-old.jar
